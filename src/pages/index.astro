@@ -1,0 +1,281 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/Hero.astro';
+import SectionHeading from '@components/SectionHeading.astro';
+import ServiceCard from '@components/ServiceCard.astro';
+import ReviewCard from '@components/ReviewCard.astro';
+import CTASection from '@components/CTASection.astro';
+import PhotoPlaceholder from '@components/PhotoPlaceholder.astro';
+import ServiceAreaMap from '@components/ServiceAreaMap.astro';
+import Icon from '@components/Icon.astro';
+import { business, services, trustPoints, towns, PLACEHOLDER } from '@data/business';
+import { testimonials } from '@data/testimonials';
+
+import heroStriped from '@images/hero-striped-lawn.jpg';
+import crewMowing from '@images/crew-mowing.jpg';
+import truck from '@images/truck.jpg';
+
+const homeReviews = testimonials.slice(0, 3);
+const steps = [
+  { n: '01', title: 'Request a free quote', body: 'Tell us about your property. Call or fill out the form — it takes two minutes.' },
+  { n: '02', title: 'We assess & schedule', body: 'We confirm the plan, the price, and a time that works for you.' },
+  { n: '03', title: 'Sit back & enjoy', body: 'We handle the work and the clean-up. You enjoy the results.' },
+];
+const featuredTowns = ['Mullica Hill', 'Glassboro', 'Clayton', 'Pitman', 'Sewell', 'Williamstown', 'Woodstown', 'Monroeville'];
+---
+<BaseLayout
+  title="Lawn Care & Landscaping in Monroeville, NJ"
+  description="Family-owned lawn care & landscaping serving Salem & Gloucester counties. Weekly mowing, cleanups, mulch, snow removal & more. Free quotes — call (856) 538-1755."
+  hasHero={true}
+>
+  <Hero />
+
+  <!-- 2 · Intro band -->
+  <section class="bg-cream">
+    <div class="container-x grid items-center gap-12 py-20 lg:grid-cols-[1fr_0.85fr] lg:py-28">
+      <div>
+        <SectionHeading
+          eyebrow="South Jersey's lawn crew"
+          icon="leaf"
+          title="Salem & Gloucester County's go-to lawn crew"
+          size="display"
+        />
+        <p class="mt-6 max-w-prose text-lg leading-relaxed text-ink-soft" data-reveal>
+          At {business.name}, we treat every yard like it's our own. With
+          <span class="placeholder-token">{PLACEHOLDER.YEARS}</span> of hands-on experience, we've built our name on
+          dependable, detail-obsessed work for homeowners and businesses alike — from weekly mowing and razor-sharp
+          edging to seasonal cleanups, mulch, and winter snow. Whether you want hands-off weekly upkeep or a one-time
+          refresh, we show up on time, do it right, and leave your property spotless.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3" data-reveal data-delay="0.1">
+          <a href="/about" class="btn-green">Meet the crew <Icon name="arrow" size={17} /></a>
+          <a href="/services" class="btn-outline">Browse services</a>
+        </div>
+      </div>
+
+      <div class="intro-figure" data-reveal data-delay="0.15">
+        <Image src={heroStriped} alt="A freshly striped, sharply edged front lawn in South Jersey" width={900} height={600} class="intro-img" sizes="(max-width: 1024px) 100vw, 520px" />
+        <div class="intro-badge">
+          <span class="intro-badge-num tnum">5.0</span>
+          <span class="intro-badge-label">Rated on<br />Yelp &amp; Angi</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · Services grid -->
+  <section class="bg-white">
+    <div class="container-x py-20 lg:py-28">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <SectionHeading eyebrow="What we do" icon="mower" title="Everything your property needs — all year" size="display" class="max-w-2xl" />
+        <a href="/services" class="link-arrow shrink-0 pb-2" data-reveal>See all services <Icon name="arrow" size={18} /></a>
+      </div>
+      <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-reveal-group data-stagger="90">
+        {services.map((s) => <ServiceCard service={s} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · Why Yurgin's (green band) -->
+  <section class="why-band turf-stripes-dark">
+    <div class="container-x py-20 lg:py-28">
+      <SectionHeading eyebrow="Why neighbors choose us" icon="shield" title="Why neighbors choose Yurgin's" light size="display" />
+      <div class="mt-14 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3" data-reveal-group data-stagger="100">
+        {trustPoints.map((t) => (
+          <div class="why-tile">
+            <span class="why-icon"><Icon name={t.icon} size={24} /></span>
+            <h3 class="why-title">{t.title}</h3>
+            <p class="why-body">{t.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · Work teaser -->
+  <section class="bg-cream">
+    <div class="container-x py-20 lg:py-28">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <SectionHeading eyebrow="Our work" icon="sparkle" title="The proof is in the stripes" size="display" class="max-w-2xl" />
+        <a href="/our-work" class="link-arrow shrink-0 pb-2" data-reveal>View our work <Icon name="arrow" size={18} /></a>
+      </div>
+      <p class="mt-5 max-w-prose text-lg text-ink-soft" data-reveal>
+        Take a look at recent lawns, edging, and cleanups across Salem &amp; Gloucester counties.
+      </p>
+      <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group data-stagger="80">
+        <figure class="work-tile work-tall">
+          <Image src={heroStriped} alt="Freshly striped front lawn in Monroeville, NJ" width={800} height={1000} class="work-img" />
+          <figcaption class="work-cap">Striped front lawn — Monroeville</figcaption>
+        </figure>
+        <figure class="work-tile">
+          <Image src={crewMowing} alt="Yurgin's crew mowing a commercial property on a zero-turn" width={800} height={600} class="work-img" />
+          <figcaption class="work-cap">Mid-mow, commercial property</figcaption>
+        </figure>
+        <figure class="work-tile">
+          <Image src={truck} alt="The branded Yurgin's Lawn Care F-150 truck" width={800} height={600} class="work-img" />
+          <figcaption class="work-cap">On the road and ready</figcaption>
+        </figure>
+        <PhotoPlaceholder label="Before / after lawn edging" aspect="4 / 5" icon="leaf" class="work-tile" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · How it works -->
+  <section class="bg-white">
+    <div class="container-x py-20 lg:py-28">
+      <SectionHeading eyebrow="How it works" icon="check" title="Getting started is easy" align="center" size="display" />
+      <ol class="mt-16 grid gap-8 md:grid-cols-3" data-reveal-group data-stagger="120">
+        {steps.map((s) => (
+          <li class="step">
+            <span class="step-num tnum">{s.n}</span>
+            <h3 class="step-title">{s.title}</h3>
+            <p class="step-body">{s.body}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="mt-12 text-center" data-reveal>
+        <a href="/contact" class="btn-gold">Get a Free Quote</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · Reviews -->
+  <section class="reviews-band">
+    <div class="container-x py-20 lg:py-28">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <SectionHeading eyebrow="5.0 on Yelp & Angi" icon="star" title="Don't take our word for it" size="display" class="max-w-2xl" />
+        <a href="/reviews" class="link-arrow shrink-0 pb-2" data-reveal>Read more reviews <Icon name="arrow" size={18} /></a>
+      </div>
+      <div class="mt-12 grid gap-5 md:grid-cols-3" data-reveal-group data-stagger="110">
+        {homeReviews.map((t) => <ReviewCard quote={t.short || t.quote} author={t.author} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · Service area -->
+  <section class="bg-white">
+    <div class="container-x grid items-center gap-12 py-20 lg:grid-cols-2 lg:py-28">
+      <div>
+        <SectionHeading eyebrow="Where we work" icon="pin" title="Proudly serving South Jersey" size="display" />
+        <p class="mt-6 max-w-prose text-lg text-ink-soft" data-reveal>
+          Based in Monroeville, we cover a {business.serviceRadiusMiles}-mile radius across {business.areaServedLabel} —
+          including Mullica Hill, Glassboro, Clayton, Pitman, Sewell, Williamstown, Woodstown, and more.
+        </p>
+        <ul class="mt-7 flex flex-wrap gap-2" data-reveal-group data-stagger="40">
+          {featuredTowns.map((name) => {
+            const town = towns.find((t) => t.name === name);
+            return <li><a href={town ? `/service-areas/${town.slug}` : '/service-areas'} class="town-chip">{name}</a></li>;
+          })}
+          <li><a href="/service-areas" class="town-chip town-chip-all">All areas <Icon name="arrow" size={14} /></a></li>
+        </ul>
+      </div>
+
+      <!-- Service-area map -->
+      <ServiceAreaMap height={340} zoom={10} data-reveal data-delay="0.1" />
+
+    </div>
+  </section>
+
+  <!-- 9 · Seasonal / retention band -->
+  <section class="seasonal-band">
+    <div class="container-x flex flex-col items-start gap-8 py-16 lg:flex-row lg:items-center lg:justify-between lg:py-20">
+      <div class="max-w-2xl">
+        <p class="eyebrow mb-3 inline-flex items-center gap-2 text-gold-pale" data-reveal><Icon name="snow" size={16} /> Plan ahead</p>
+        <h2 data-split class="text-h2 text-cream">Already a customer? Get ahead of winter.</h2>
+        <p class="mt-4 text-lg text-cream/80" data-reveal>
+          Spots fill fast. Lock in <strong class="text-cream">Snow Removal</strong> and
+          <strong class="text-cream">Holiday Lighting</strong> before the season hits.
+        </p>
+      </div>
+      <div class="flex shrink-0 flex-wrap gap-3" data-reveal data-delay="0.1">
+        <a href="/services/snow-removal" class="btn-gold">Reserve my spot</a>
+        <a href="/services/holiday-lighting" class="btn-ghost-light">Holiday lighting</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 · Final CTA -->
+  <CTASection />
+</BaseLayout>
+
+<style>
+  /* Intro figure */
+  .intro-figure { position: relative; }
+  .intro-img {
+    width: 100%;
+    height: auto;
+    border-radius: 1.5rem;
+    box-shadow: 0 30px 60px -28px rgba(26, 26, 26, 0.5);
+  }
+  .intro-badge {
+    position: absolute;
+    left: -1rem;
+    bottom: -1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: #fff;
+    border-radius: 1rem;
+    padding: 0.85rem 1.1rem;
+    box-shadow: 0 18px 40px -16px rgba(26, 26, 26, 0.4);
+  }
+  .intro-badge-num { font-family: 'Bricolage Grotesque Variable', sans-serif; font-size: 2rem; font-weight: 800; color: #3e8e2e; line-height: 1; }
+  .intro-badge-label { font-size: 0.78rem; font-weight: 600; line-height: 1.2; color: #3a3a36; }
+
+  /* Why band */
+  .why-band { background: #2e6b22; color: #f4f1e6; }
+  .why-tile { display: flex; flex-direction: column; gap: 0.6rem; }
+  .why-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px; border-radius: 14px;
+    background: rgba(244, 241, 230, 0.1); color: #e8901f;
+    border: 1px solid rgba(244, 241, 230, 0.16);
+  }
+  .why-title { font-family: 'Bricolage Grotesque Variable', sans-serif; font-size: 1.25rem; font-weight: 800; color: #fff; }
+  .why-body { color: rgba(244, 241, 230, 0.92); line-height: 1.5; }
+
+  /* Work tiles */
+  .work-tile { position: relative; overflow: hidden; border-radius: 1rem; box-shadow: 0 14px 34px -20px rgba(26,26,26,0.4); }
+  .work-tall { grid-row: span 2; }
+  .work-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.16,1,0.3,1); }
+  .work-tile:hover .work-img { transform: scale(1.05); }
+  .work-cap {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 1.5rem 1rem 0.85rem;
+    font-size: 0.82rem; font-weight: 600; color: #fff;
+    background: linear-gradient(to top, rgba(20,36,16,0.8), transparent);
+  }
+  @media (min-width: 1024px) {
+    .work-tall { grid-row: span 2; min-height: 100%; }
+  }
+
+  /* Steps */
+  .step { position: relative; padding-top: 1rem; }
+  .step-num {
+    font-family: 'Spline Sans Mono Variable', ui-monospace, monospace;
+    font-size: 0.95rem; font-weight: 600; color: #9A5408;
+    display: inline-block; margin-bottom: 0.9rem;
+    padding-bottom: 0.5rem; border-bottom: 2px solid rgba(232,144,31,0.3);
+  }
+  .step-title { font-family: 'Bricolage Grotesque Variable', sans-serif; font-size: 1.5rem; font-weight: 800; color: #1a1a1a; margin-bottom: 0.5rem; }
+  .step-body { color: #3a3a36; line-height: 1.55; max-width: 30ch; }
+
+  /* Reviews band */
+  .reviews-band { background: #efeee2; }
+
+  /* Service-area chips */
+  .town-chip {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    padding: 0.5rem 1rem; border-radius: 9999px;
+    background: #f4f1e6; border: 1px solid rgba(46,107,34,0.18);
+    font-weight: 600; font-size: 0.92rem; color: #2e6b22;
+    transition: background-color 0.2s, color 0.2s, transform 0.2s;
+  }
+  .town-chip:hover { background: #3e8e2e; color: #fff; transform: translateY(-2px); }
+  .town-chip-all { background: #2e6b22; color: #fff; }
+  .town-chip-all:hover { background: #1c3a18; }
+
+  /* Seasonal band */
+  .seasonal-band { background: #1c3a18; color: #f4f1e6; }
+</style>

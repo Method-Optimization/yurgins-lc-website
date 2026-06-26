@@ -1,0 +1,49 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import { business } from '@data/business';
+---
+<BaseLayout
+  title="Privacy Policy"
+  description="Privacy Policy for Yurgin's Lawn Care."
+  noindex={true}
+>
+  <PageHero eyebrow="Legal" icon="shield" title="Privacy Policy" />
+
+  <section class="bg-white">
+    <div class="container-x py-14 lg:py-20">
+      <div class="legal-prose">
+        <div class="legal-notice">
+          <strong>Placeholder — needs review.</strong> Carry over the existing Privacy Policy from the current site
+          and have the owner or an attorney confirm the final wording before launch.
+        </div>
+
+        <p>{business.name} respects your privacy. This page explains what information we collect when you contact us
+          or request a quote, and how we use it.</p>
+
+        <h2>Information we collect</h2>
+        <p>When you submit a quote or careers form, we collect the details you provide — such as your name, email,
+          phone number, address, and message — so we can respond to your request.</p>
+
+        <h2>How we use it</h2>
+        <p>We use your information only to respond to your inquiry, provide services, and follow up. We do not sell your
+          personal information.</p>
+
+        <h2>Contact</h2>
+        <p>Questions about this policy? Email <a href={`mailto:${business.email}`}>{business.email}</a> or call
+          <a href={business.phoneHref}>{business.phoneDisplay}</a>.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-prose { max-width: 44rem; }
+  .legal-prose p { line-height: 1.7; color: #3a3a36; margin-bottom: 1.1rem; }
+  .legal-prose h2 { font-family: 'Bricolage Grotesque Variable', sans-serif; font-size: 1.4rem; font-weight: 800; color: #1a1a1a; margin: 2rem 0 0.6rem; }
+  .legal-prose a { color: #2e6b22; text-decoration: underline; text-underline-offset: 2px; }
+  .legal-notice {
+    background: rgba(232,144,31,0.12); border: 1px solid rgba(232,144,31,0.4);
+    border-radius: 0.8rem; padding: 1rem 1.25rem; margin-bottom: 2rem; color: #6e2e1f; line-height: 1.5;
+  }
+</style>

@@ -1,0 +1,36 @@
+---
+import { business } from '@data/business';
+import Icon from './Icon.astro';
+
+interface Props {
+  heading?: string;
+  body?: string;
+  class?: string;
+}
+const {
+  heading = "Ready for a lawn you're proud of?",
+  body = 'Get a fast, free quote — or call us and talk to a real local crew.',
+  class: cls = '',
+} = Astro.props;
+---
+<section class:list={['cta-band turf-stripes-dark', cls]}>
+  <div class="container-x py-16 text-center lg:py-24">
+    <div class="mx-auto max-w-2xl">
+      <h2 data-split class="text-h2 text-cream">{heading}</h2>
+      <p class="mx-auto mt-5 max-w-xl text-lg text-cream/90" data-reveal>{body}</p>
+      <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row" data-reveal data-delay="0.1">
+        <a href="/contact" class="btn-gold">Get a Free Quote</a>
+        <a href={business.phoneHref} class="btn-ghost-light">
+          <Icon name="phone" size={18} /> <span class="tnum font-mono">{business.phoneDisplay}</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-band {
+    background: #2e6b22;
+    color: #f4f1e6;
+  }
+</style>

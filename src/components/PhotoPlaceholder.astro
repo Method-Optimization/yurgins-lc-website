@@ -1,0 +1,71 @@
+---
+/**
+ * Visible, clearly-labeled stand-in for photography that doesn't exist yet.
+ * Sized to the final layout so swapping in a real photo won't shift anything.
+ * Every instance should be mirrored in TODO-before-launch.md.
+ */
+import Icon from './Icon.astro';
+import type { IconKey } from '@data/business';
+
+interface Props {
+  label: string;
+  aspect?: string;
+  class?: string;
+  icon?: IconKey;
+}
+const { label, aspect = '4 / 3', class: cls = '', icon = 'sparkle' } = Astro.props;
+---
+<div
+  class:list={['photo-ph', cls]}
+  style={`aspect-ratio:${aspect}`}
+  role="img"
+  aria-label={`Photo placeholder — ${label}`}
+>
+  <div class="turf-stripes absolute inset-0 opacity-60"></div>
+  <div class="photo-ph-inner">
+    <span class="photo-ph-icon"><Icon name={icon} size={24} /></span>
+    <span class="photo-ph-label">{label}</span>
+    <span class="placeholder-token">[[PHOTO]]</span>
+  </div>
+</div>
+
+<style>
+  .photo-ph {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, #eef0e4, #e3e8d6);
+    border: 1.5px dashed rgba(46, 107, 34, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  .photo-ph-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1.25rem;
+    text-align: center;
+    max-width: 22rem;
+  }
+  .photo-ph-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 9999px;
+    background: rgba(46, 107, 34, 0.12);
+    color: #2e6b22;
+  }
+  .photo-ph-label {
+    font-weight: 600;
+    color: #2e6b22;
+    line-height: 1.35;
+    font-size: 0.95rem;
+  }
+</style>

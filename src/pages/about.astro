@@ -1,0 +1,88 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import CTASection from '@components/CTASection.astro';
+import PhotoPlaceholder from '@components/PhotoPlaceholder.astro';
+import Icon from '@components/Icon.astro';
+import { business, PLACEHOLDER } from '@data/business';
+import truck from '@images/truck.jpg';
+import crew from '@images/crew-mowing.jpg';
+
+const values = ['Family-owned & local', 'Licensed & insured', 'Detail-obsessed', 'Spotless finish', 'Real communication'];
+---
+<BaseLayout
+  title="About Yurgin's Lawn Care | Family-Owned in Monroeville, NJ"
+  description="Meet Yurgin's Lawn Care — a family-owned, licensed & insured lawn care crew serving Salem & Gloucester counties with detail-obsessed work and a spotless finish."
+  fullTitle={true}
+>
+  <PageHero
+    eyebrow="About us"
+    icon="home"
+    title="We're your neighbors — and we take pride in your lawn"
+  />
+
+  <section class="bg-white">
+    <div class="container-x grid items-start gap-12 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
+      <div class="prose-cols">
+        <p data-reveal>
+          {business.name} is a family-owned lawn care and landscaping company based right here in Monroeville, NJ.
+          What started as <span class="placeholder-token">{PLACEHOLDER.OWNER_NAME}</span>'s commitment to doing honest,
+          detail-obsessed work has grown into the crew South Jersey homeowners and businesses trust to keep their
+          properties looking their best.
+        </p>
+        <p data-reveal>
+          With <span class="placeholder-token">{PLACEHOLDER.YEARS}</span> of hands-on experience, we've earned a
+          reputation the only way that lasts: by showing up on time, doing the job right, and leaving every property
+          cleaner than we found it. We're not a faceless franchise — we're local, we're accountable, and when you call,
+          you talk to people who actually care how your lawn turns out.
+        </p>
+        <p data-reveal>
+          From weekly mowing and razor-sharp edging to cleanups, mulch, and winter snow, we handle it all — so you get
+          back your weekends and a yard you're proud of.
+        </p>
+
+        <ul class="values-strip" data-reveal-group data-stagger="60">
+          {values.map((v) => (
+            <li><Icon name="check" size={16} class="text-turf" /> {v}</li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="about-figures" data-reveal-group data-stagger="120">
+        <figure class="about-fig">
+          <Image src={truck} alt="The branded Yurgin's Lawn Care F-150 at the yard" width={900} height={600} class="about-img" />
+          <figcaption>On the road across South Jersey</figcaption>
+        </figure>
+        <figure class="about-fig">
+          <Image src={crew} alt="A Yurgin's crew member mowing a large property" width={900} height={600} class="about-img" />
+          <figcaption>The crew, mid-mow</figcaption>
+        </figure>
+        <PhotoPlaceholder label="Owner portrait — for the family story" aspect="3 / 2" icon="badge" />
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>
+
+<style>
+  .prose-cols p { font-size: 1.125rem; line-height: 1.7; color: #3a3a36; margin-bottom: 1.25rem; max-width: 38rem; }
+  .values-strip {
+    margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.6rem;
+  }
+  .values-strip li {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.5rem 0.9rem; border-radius: 9999px;
+    background: #f4f1e6; border: 1px solid rgba(46,107,34,0.15);
+    font-weight: 600; font-size: 0.9rem; color: #2e6b22;
+  }
+  .about-figures { display: flex; flex-direction: column; gap: 1rem; }
+  .about-fig { position: relative; overflow: hidden; border-radius: 1rem; box-shadow: 0 16px 40px -24px rgba(26,26,26,0.45); }
+  .about-img { width: 100%; height: auto; display: block; }
+  .about-fig figcaption {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 1.5rem 1rem 0.8rem; font-size: 0.82rem; font-weight: 600; color: #fff;
+    background: linear-gradient(to top, rgba(20,36,16,0.8), transparent);
+  }
+</style>

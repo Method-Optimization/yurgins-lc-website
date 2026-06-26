@@ -1,0 +1,69 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import CTASection from '@components/CTASection.astro';
+import PhotoPlaceholder from '@components/PhotoPlaceholder.astro';
+import heroStriped from '@images/hero-striped-lawn.jpg';
+import crew from '@images/crew-mowing.jpg';
+import truck from '@images/truck.jpg';
+---
+<BaseLayout
+  title="Our Work | Lawn Care Photos in South Jersey"
+  description="See real lawns, edging, mulch and cleanups from Yurgin's Lawn Care across Salem & Gloucester counties. Like what you see? Get a free quote: (856) 538-1755."
+>
+  <PageHero
+    eyebrow="Our work"
+    icon="sparkle"
+    title="See the difference"
+    subtitle="Crisp stripes, clean edges, refreshed beds. Here's a look at recent work across Salem & Gloucester counties. The best advertisement we have is a lawn done right."
+  />
+
+  <section class="bg-white">
+    <div class="container-x py-16 lg:py-24">
+      <div class="gallery" data-reveal-group data-stagger="70">
+        <figure class="g-item g-wide">
+          <Image src={heroStriped} alt="Freshly striped front lawn — Monroeville, NJ" width={1200} height={800} class="g-img" />
+          <figcaption>Freshly striped front lawn — Monroeville, NJ</figcaption>
+        </figure>
+        <figure class="g-item">
+          <Image src={crew} alt="Mid-mow on a commercial property" width={900} height={700} class="g-img" />
+          <figcaption>Mid-mow on a commercial property</figcaption>
+        </figure>
+        <figure class="g-item">
+          <Image src={truck} alt="On the road and ready to work" width={900} height={700} class="g-img" />
+          <figcaption>On the road and ready to work</figcaption>
+        </figure>
+        <PhotoPlaceholder label="Before / after — lawn edging" aspect="3 / 2" icon="leaf" class="g-item" />
+        <PhotoPlaceholder label="Edging close-up — crisp lines" aspect="3 / 2" icon="sparkle" class="g-item" />
+        <PhotoPlaceholder label="Fresh mulch beds" aspect="3 / 2" icon="mulch" class="g-item" />
+        <PhotoPlaceholder label="Hedge trimming — before / after" aspect="3 / 2" icon="hedge" class="g-item" />
+        <PhotoPlaceholder label="Fall cleanup in progress" aspect="3 / 2" icon="leaf" class="g-item" />
+      </div>
+
+      <p class="mt-10 text-center text-ink-soft" data-reveal>
+        We're adding new before/after sets as fresh photography comes in.
+      </p>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>
+
+<style>
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  @media (min-width: 768px) { .gallery { grid-template-columns: repeat(3, 1fr); } }
+  .g-item { position: relative; overflow: hidden; border-radius: 1rem; box-shadow: 0 14px 34px -22px rgba(26,26,26,0.4); }
+  .g-wide { grid-column: span 2; }
+  .g-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.16,1,0.3,1); }
+  .g-item:hover .g-img { transform: scale(1.05); }
+  .g-item figcaption {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 1.75rem 1rem 0.85rem; font-size: 0.82rem; font-weight: 600; color: #fff;
+    background: linear-gradient(to top, rgba(20,36,16,0.82), transparent);
+  }
+</style>

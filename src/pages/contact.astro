@@ -1,0 +1,93 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import QuoteForm from '@components/QuoteForm.astro';
+import ServiceAreaMap from '@components/ServiceAreaMap.astro';
+import Icon from '@components/Icon.astro';
+import { business } from '@data/business';
+---
+<BaseLayout
+  title="Contact Us | Free Lawn Care Quote in Monroeville, NJ"
+  description="Get a fast, free lawn care quote in Salem & Gloucester counties. Call (856) 538-1755 or send us a message — we'll get right back to you."
+>
+  <PageHero
+    eyebrow="Free quote"
+    icon="mail"
+    title="Get your free quote"
+    subtitle="Tell us about your property and what you need — we'll get back to you fast with a no-pressure quote. Prefer to talk? Give us a call. You'll reach a real local crew, not a call center."
+  />
+
+  <section class="bg-white">
+    <div class="container-x grid items-start gap-12 py-16 lg:grid-cols-[1.2fr_0.8fr] lg:py-24">
+      <!-- Form -->
+      <div>
+        <h2 class="text-h3 text-ink" data-split>Request a quote</h2>
+        <div class="mt-7" data-reveal>
+          <QuoteForm />
+        </div>
+      </div>
+
+      <!-- Details -->
+      <aside class="contact-aside" data-reveal data-delay="0.1">
+        <div class="contact-card">
+          <h2 class="contact-card-title">Talk to us</h2>
+          <ul class="contact-list">
+            <li>
+              <span class="contact-ic"><Icon name="phone" size={18} /></span>
+              <span>
+                <span class="contact-label">Call or text</span>
+                <a href={business.phoneHref} class="contact-value tnum font-mono">{business.phoneDisplay}</a>
+              </span>
+            </li>
+            <li>
+              <span class="contact-ic"><Icon name="mail" size={18} /></span>
+              <span>
+                <span class="contact-label">Email</span>
+                <a href={`mailto:${business.email}`} class="contact-value break-all">{business.email}</a>
+              </span>
+            </li>
+            <li>
+              <span class="contact-ic"><Icon name="pin" size={18} /></span>
+              <span>
+                <span class="contact-label">Based in</span>
+                <span class="contact-value">{business.address.city}, {business.address.region} — serving {business.areaServedLabel}</span>
+              </span>
+            </li>
+            <li>
+              <span class="contact-ic"><Icon name="clock" size={18} /></span>
+              <span>
+                <span class="contact-label">Hours</span>
+                {business.hours.map((h) => (
+                  <span class="contact-value"><span class="font-semibold">{h.days}:</span> {h.time}</span>
+                ))}
+              </span>
+            </li>
+          </ul>
+          <a href={business.phoneHref} class="btn-gold mt-6 w-full">Call {business.phoneDisplay}</a>
+        </div>
+
+        <ServiceAreaMap height={300} zoom={11} label={false} class="mt-6" />
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-card {
+    background: #2e6b22;
+    color: #f4f1e6;
+    border-radius: 1.25rem;
+    padding: 1.75rem;
+  }
+  .contact-card-title { font-family: 'Bricolage Grotesque Variable', sans-serif; font-weight: 800; font-size: 1.4rem; color: #fff; margin-bottom: 1.25rem; }
+  .contact-list { display: flex; flex-direction: column; gap: 1.1rem; }
+  .contact-list li { display: flex; gap: 0.85rem; align-items: flex-start; }
+  .contact-ic {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 11px; flex-shrink: 0;
+    background: rgba(244,241,230,0.12); color: #e8901f;
+  }
+  .contact-label { display: block; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(244,241,230,0.7); font-weight: 600; }
+  .contact-value { display: block; font-weight: 600; color: #fff; margin-top: 1px; }
+  a.contact-value:hover { color: #e8901f; }
+</style>

@@ -1,0 +1,48 @@
+---
+import Icon from './Icon.astro';
+import type { IconKey } from '@data/business';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  icon?: IconKey;
+  variant?: 'cream' | 'green';
+}
+const { eyebrow, title, subtitle, icon, variant = 'cream' } = Astro.props;
+const light = variant === 'green';
+---
+<section class:list={['page-hero', variant === 'green' ? 'is-green turf-stripes-dark' : 'is-cream turf-stripes']}>
+  <div class="container-x">
+    {eyebrow && (
+      <p class:list={['eyebrow mb-4 inline-flex items-center gap-2', light ? 'text-gold' : 'text-turf-dark']} data-reveal>
+        {icon && <Icon name={icon} size={16} />}
+        {eyebrow}
+      </p>
+    )}
+    <h1 data-split data-split-hero class:list={['page-hero-title', light ? 'text-cream' : 'text-ink']}>{title}</h1>
+    {subtitle && (
+      <p class:list={['page-hero-sub', light ? 'text-cream/90' : 'text-ink-soft']} data-reveal data-delay="0.15">{subtitle}</p>
+    )}
+    <slot />
+  </div>
+</section>
+
+<style>
+  .page-hero { padding-top: clamp(3rem, 6vw, 5.5rem); padding-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .is-cream { background: #f4f1e6; }
+  .is-green { background: #2e6b22; }
+  .page-hero-title {
+    font-size: clamp(2.4rem, 4.5vw + 1rem, 4.25rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+    max-width: 18ch;
+  }
+  .page-hero-sub {
+    margin-top: 1.5rem;
+    max-width: 46rem;
+    font-size: clamp(1.05rem, 0.5vw + 1rem, 1.3rem);
+    line-height: 1.55;
+  }
+</style>

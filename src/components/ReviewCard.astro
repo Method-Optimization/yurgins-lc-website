@@ -1,0 +1,48 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  quote: string;
+  author: string;
+  class?: string;
+}
+const { quote, author, class: cls = '' } = Astro.props;
+---
+<figure class:list={['review-card', cls]}>
+  <div class="review-stars" role="img" aria-label="5 out of 5 stars">
+    {[0, 1, 2, 3, 4].map(() => <Icon name="star" size={17} class="text-gold" />)}
+  </div>
+  <blockquote class="review-quote">{quote}</blockquote>
+  <figcaption class="review-author">— {author}</figcaption>
+</figure>
+
+<style>
+  .review-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.85rem;
+    background: #fff;
+    border-radius: 1.25rem;
+    box-shadow: 0 1px 2px rgba(26, 26, 26, 0.06), 0 14px 34px -22px rgba(26, 26, 26, 0.3);
+    height: 100%;
+  }
+  .review-stars { display: inline-flex; gap: 2px; }
+  .review-quote {
+    font-family: 'Bricolage Grotesque Variable', sans-serif;
+    font-size: 1.18rem;
+    line-height: 1.45;
+    font-weight: 600;
+    color: #1a1a1a;
+    flex: 1;
+  }
+  .review-quote::before { content: '\201C'; }
+  .review-quote::after { content: '\201D'; }
+  .review-author {
+    font-family: 'Spline Sans Mono Variable', ui-monospace, monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    color: #2e6b22;
+    font-weight: 500;
+  }
+</style>

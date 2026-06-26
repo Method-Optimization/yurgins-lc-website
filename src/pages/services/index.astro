@@ -1,0 +1,28 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import ServiceCard from '@components/ServiceCard.astro';
+import CTASection from '@components/CTASection.astro';
+import { services } from '@data/business';
+---
+<BaseLayout
+  title="Lawn Care & Landscaping Services"
+  description="Mowing, cleanups, mulch, hedge trimming, snow removal & holiday lighting across Salem & Gloucester counties. Free quotes — (856) 538-1755."
+>
+  <PageHero
+    eyebrow="Our services"
+    icon="mower"
+    title="One local crew for a great-looking property all year"
+    subtitle="Whatever the season, we've got it covered — and we clean up before we leave, every time."
+  />
+
+  <section class="bg-white">
+    <div class="container-x py-16 lg:py-24">
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-reveal-group data-stagger="90">
+        {services.map((s) => <ServiceCard service={s} />)}
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

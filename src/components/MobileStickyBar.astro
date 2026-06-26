@@ -1,0 +1,58 @@
+---
+import { business } from '@data/business';
+import Icon from './Icon.astro';
+---
+<div class="mobile-bar lg:hidden" aria-label="Quick actions">
+  <a href={business.phoneHref} class="bar-call">
+    <Icon name="phone" size={18} /> Call
+  </a>
+  <a href="/contact" class="bar-quote">
+    Free Quote <Icon name="arrow" size={18} />
+  </a>
+</div>
+
+<style>
+  .mobile-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+  }
+  @media (min-width: 1024px) {
+    .mobile-bar { display: none; }
+  }
+  .mobile-bar {
+    gap: 0.5rem;
+    padding: 0.55rem 0.75rem calc(0.55rem + env(safe-area-inset-bottom));
+    background: rgba(244, 241, 230, 0.92);
+    backdrop-filter: blur(10px) saturate(140%);
+    border-top: 1px solid rgba(26, 26, 26, 0.08);
+    box-shadow: 0 -8px 24px -16px rgba(26, 26, 26, 0.5);
+  }
+  .bar-call,
+  .bar-quote {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    min-height: 52px;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .bar-call {
+    background: #fff;
+    border: 2px solid rgba(26, 26, 26, 0.12);
+    color: #2e6b22;
+  }
+  .bar-quote {
+    background: #e8901f;
+    color: #1a1a1a;
+    box-shadow: 0 8px 20px -8px rgba(232, 144, 31, 0.8);
+  }
+  .bar-call:active,
+  .bar-quote:active { transform: translateY(1px); }
+</style>

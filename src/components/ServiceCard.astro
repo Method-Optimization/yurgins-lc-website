@@ -1,0 +1,87 @@
+---
+import Icon from './Icon.astro';
+import type { Service } from '@data/business';
+
+interface Props {
+  service: Service;
+}
+const { service } = Astro.props;
+---
+<a href={service.href} class="service-card group">
+  <div class="service-icon">
+    <Icon name={service.icon} size={26} />
+  </div>
+  <h3 class="service-title">{service.title}</h3>
+  <p class="service-blurb">{service.blurb}</p>
+  <span class="service-link">
+    {service.cta || 'Learn more'}
+    <Icon name="arrow" size={16} />
+  </span>
+</a>
+
+<style>
+  .service-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.75rem;
+    background: #fff;
+    border-radius: 1.25rem;
+    box-shadow: 0 1px 2px rgba(26, 26, 26, 0.06), 0 12px 30px -18px rgba(26, 26, 26, 0.25);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+  }
+  .service-card::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3e8e2e, #e8901f);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .service-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 2px 4px rgba(26, 26, 26, 0.08), 0 24px 50px -22px rgba(26, 26, 26, 0.4);
+  }
+  .service-card:hover::after { transform: scaleX(1); }
+
+  .service-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: rgba(62, 142, 46, 0.1);
+    color: #2e6b22;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  .service-card:hover .service-icon { background: #3e8e2e; color: #fff; }
+
+  .service-title {
+    font-family: 'Bricolage Grotesque Variable', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: #1a1a1a;
+  }
+  .service-blurb {
+    color: #3a3a36;
+    line-height: 1.5;
+    flex: 1;
+  }
+  .service-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 700;
+    color: #2e6b22;
+    margin-top: 0.25rem;
+  }
+  .service-link svg { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+  .service-card:hover .service-link svg { transform: translateX(4px); }
+</style>

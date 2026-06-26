@@ -1,0 +1,197 @@
+---
+import { Image } from 'astro:assets';
+import { business } from '@data/business';
+import Icon from './Icon.astro';
+import houseImg from '@images/hero-striped-lawn.jpg';
+---
+<section data-hero data-parallax-bounds class="hero">
+  <!-- BASE LAYER — house + headline, revealed as the logo shrinks away -->
+  <div class="hero-base">
+    <Image
+      src={houseImg}
+      alt="A freshly striped, sharply edged South Jersey front lawn"
+      widths={[768, 1280, 1920]}
+      sizes="100vw"
+      class="hero-house"
+      data-parallax="0.12"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="hero-scrim absolute inset-0" aria-hidden="true"></div>
+
+    <div class="hero-content container-x">
+      <p class="hero-eyebrow" data-reveal>Family-Owned · Licensed &amp; Insured · 5-Star Rated</p>
+      <h1 data-split data-split-hero data-split-delay="0.1" class="hero-h1">Crisp lawns. Clean lines. Zero hassle.</h1>
+      <p class="hero-sub" data-reveal data-delay="0.25">
+        Family-owned lawn care &amp; landscaping in Monroeville, NJ — serving {business.areaServedLabel}. Reliable weekly
+        service, fast quotes, and a complete clean-up every single visit.
+      </p>
+      <div class="hero-cta" data-reveal data-delay="0.4">
+        <a href="/contact" class="btn-gold">Get a Free Quote</a>
+        <a href={business.phoneHref} class="btn-ghost-light">
+          <Icon name="phone" size={18} /> <span class="tnum font-mono">{business.phoneDisplay}</span>
+        </a>
+      </div>
+      <ul class="hero-trust" data-reveal data-delay="0.55">
+        <li class="hero-stars">
+          {[0, 1, 2, 3, 4].map(() => <Icon name="star" size={16} class="text-gold" />)}
+          <span class="ml-1.5 tnum font-mono text-sm">5.0 rated</span>
+        </li>
+        <li>Licensed &amp; Insured</li>
+        <li>Family-Owned</li>
+        <li>Clean-up every job</li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+<!-- INTRO OVERLAY — full-screen bull animation that plays once, then fades out
+     to reveal the site. Sits outside the hero so it can cover the header too.
+     Desktop + motion only; hidden on mobile / reduced-motion. -->
+<div class="hero-reveal" data-hero-reveal aria-hidden="true">
+  <video
+    data-hero-video
+    class="hero-reveal-video"
+    muted
+    playsinline
+    preload="none"
+    poster="/assets/images/logo-final.png"
+  ></video>
+  <img class="hero-reveal-final" data-hero-final src="/assets/images/logo-final.png" alt="" />
+</div>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    overflow: hidden;
+    isolation: isolate;
+    background: #1c3a18;
+  }
+
+  /* ---- Base layer (house + text) ---- */
+  .hero-base { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; }
+  .hero-house {
+    position: absolute;
+    inset: -8% 0;
+    width: 100%;
+    height: 116%;
+    object-fit: cover;
+    z-index: 0;
+  }
+  .hero-scrim { z-index: 1; }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    padding-top: 6rem;
+    padding-bottom: clamp(4rem, 10vh, 7.5rem);
+    max-width: 54rem;
+  }
+  .hero-eyebrow {
+    font-family: 'Spline Sans Mono Variable', ui-monospace, monospace;
+    font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(244, 241, 230, 0.9); margin-bottom: 1.25rem;
+  }
+  .hero-h1 {
+    font-size: clamp(2.7rem, 6vw + 0.4rem, 5.4rem);
+    line-height: 0.97; letter-spacing: -0.02em; font-weight: 800;
+    max-width: 15ch; text-shadow: 0 2px 36px rgba(0, 0, 0, 0.4);
+  }
+  .hero-sub {
+    margin-top: 1.5rem; max-width: 40rem;
+    font-size: clamp(1.05rem, 0.6vw + 1rem, 1.3rem); line-height: 1.55;
+    color: rgba(244, 241, 230, 0.95);
+  }
+  .hero-cta { margin-top: 2.25rem; display: flex; flex-wrap: wrap; gap: 0.85rem; }
+  .hero-trust {
+    margin-top: 2.5rem; display: flex; flex-wrap: wrap; align-items: center;
+    gap: 0.6rem 1.4rem; font-size: 0.9rem; font-weight: 600; color: rgba(244, 241, 230, 0.92);
+  }
+  .hero-trust > li:not(.hero-stars) { position: relative; }
+  .hero-trust > li + li::before {
+    content: ''; position: absolute; left: -0.75rem; top: 50%;
+    width: 4px; height: 4px; border-radius: 9999px; background: rgba(244, 241, 230, 0.45); transform: translateY(-50%);
+  }
+  .hero-stars { display: inline-flex; align-items: center; gap: 1px; }
+
+  /* ---- Intro overlay (plays once, then fades to reveal the site) ---- */
+  .hero-reveal {
+    display: none; /* shown on desktop + motion via the query below */
+    position: fixed; inset: 0; z-index: 60;
+    background: #ffffff;
+    opacity: 1;
+    transition: opacity 0.9s ease;
+  }
+  @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+    .hero-reveal { display: block; }
+  }
+  .hero-reveal.is-faded { opacity: 0; pointer-events: none; }
+  .hero-reveal-video,
+  .hero-reveal-final {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center 22%;
+  }
+  .hero-reveal-final { opacity: 0; transition: opacity 0.3s ease; }
+  .hero-reveal-final.is-shown { opacity: 1; }
+</style>
+
+<script>
+  // Desktop + motion only: play the bull animation once, then fade the overlay
+  // out to reveal the site. The visitor can also skip it by interacting.
+  // Play the intro only once per browsing session — so returning to the
+  // homepage (e.g. clicking the logo) doesn't replay the animation.
+  let alreadyPlayed = false;
+  try {
+    alreadyPlayed = sessionStorage.getItem('yurgins-intro-played') === '1';
+  } catch {}
+
+  const allow =
+    !alreadyPlayed &&
+    window.matchMedia('(min-width: 768px)').matches &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reveal = document.querySelector<HTMLElement>('[data-hero-reveal]');
+
+  // If we're not playing the intro, make sure the overlay never shows.
+  if (!allow && reveal) reveal.style.display = 'none';
+  const video = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+  const finalImg = document.querySelector<HTMLElement>('[data-hero-final]');
+
+  if (allow && video && reveal) {
+    let dismissed = false;
+    const skip = () => {
+      ['wheel', 'touchstart', 'pointerdown', 'keydown'].forEach((e) =>
+        window.removeEventListener(e, dismiss)
+      );
+    };
+    const dismiss = () => {
+      if (dismissed) return;
+      dismissed = true;
+      try { sessionStorage.setItem('yurgins-intro-played', '1'); } catch {}
+      skip();
+      reveal.classList.add('is-faded');
+      window.setTimeout(() => { reveal.style.display = 'none'; }, 950);
+    };
+    // When the clip finishes, lock in the clean logo frame, then fade out.
+    const finish = () => { finalImg?.classList.add('is-shown'); dismiss(); };
+
+    const source = document.createElement('source');
+    source.src = '/assets/video/hero.mp4';
+    source.type = 'video/mp4';
+    video.appendChild(source);
+    video.load();
+
+    video.addEventListener('ended', finish, { once: true });
+    // Safety: never trap the visitor if the video stalls or won't autoplay.
+    window.setTimeout(dismiss, 10000);
+    ['wheel', 'touchstart', 'pointerdown', 'keydown'].forEach((e) =>
+      window.addEventListener(e, dismiss, { passive: true })
+    );
+
+    const play = () => video.play().catch(() => {});
+    if (video.readyState >= 2) play();
+    else video.addEventListener('loadeddata', play, { once: true });
+  }
+</script>

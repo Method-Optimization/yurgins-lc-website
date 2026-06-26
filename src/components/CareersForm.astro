@@ -1,0 +1,77 @@
+---
+import Icon from './Icon.astro';
+import { PLACEHOLDER, services } from '@data/business';
+---
+<div class="form-wrap">
+  <form
+    class="careers-form"
+    name="careers"
+    method="POST"
+    action={PLACEHOLDER.FORM_ENDPOINT}
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    data-validate
+  >
+    <input type="hidden" name="form-name" value="careers" />
+    <p hidden aria-hidden="true">
+      <label>Don't fill this out: <input name="bot-field" /></label>
+    </p>
+
+    <div class="form-grid">
+      <div class="field form-span-2">
+        <label class="field-label" for="cf-name">Name <span class="req">*</span></label>
+        <input class="field-input" id="cf-name" name="name" type="text" required data-label="Name" autocomplete="name" />
+        <span class="field-error" data-error-for="name" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="field">
+        <label class="field-label" for="cf-email">Email <span class="req">*</span></label>
+        <input class="field-input" id="cf-email" name="email" type="email" required data-label="Email" autocomplete="email" inputmode="email" />
+        <span class="field-error" data-error-for="email" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="field">
+        <label class="field-label" for="cf-phone">Phone <span class="req">*</span></label>
+        <input class="field-input" id="cf-phone" name="phone" type="tel" required data-label="Phone" autocomplete="tel" inputmode="tel" />
+        <span class="field-error" data-error-for="phone" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="field">
+        <label class="field-label" for="cf-position">Position interested in</label>
+        <select class="field-select" id="cf-position" name="position" data-label="Position">
+          <option value="">Choose a role…</option>
+          {services.map((s) => <option value={s.title}>{s.title}</option>)}
+          <option value="General Crew">General Crew</option>
+        </select>
+        <span class="field-error" data-error-for="position" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="field">
+        <label class="field-label" for="cf-experience">Years of experience</label>
+        <input class="field-input" id="cf-experience" name="experience" type="text" data-label="Experience" placeholder="e.g. 2 years" />
+        <span class="field-error" data-error-for="experience" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="field form-span-2">
+        <label class="field-label" for="cf-message">Message</label>
+        <textarea class="field-textarea" id="cf-message" name="message" data-label="Message" placeholder="Tell us a little about yourself and why you'd be a good fit…"></textarea>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-gold mt-6 w-full sm:w-auto">Apply Now</button>
+    <p class="mt-3 text-sm text-ink-soft">
+      Form delivery isn't wired yet — endpoint <span class="placeholder-token">{PLACEHOLDER.FORM_ENDPOINT}</span>.
+    </p>
+  </form>
+
+  <div class="form-success" data-success>
+    <span class="form-success-icon"><Icon name="check" size={30} stroke={2.6} /></span>
+    <h3 class="font-display text-2xl font-extrabold text-ink">Application received!</h3>
+    <p class="max-w-md text-ink-soft">Thanks for your interest in joining the crew. If it looks like a fit, we'll be in touch.</p>
+  </div>
+</div>
+
+<style>
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+  .form-span-2 { grid-column: 1 / -1; }
+  @media (max-width: 540px) { .form-grid { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  import '../scripts/forms.ts';
+</script>

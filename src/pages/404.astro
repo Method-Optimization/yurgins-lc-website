@@ -1,0 +1,39 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Icon from '@components/Icon.astro';
+import { business } from '@data/business';
+import logo from '@images/logo.png';
+---
+<BaseLayout title="Page Not Found" description="The page you're looking for isn't here." noindex={true}>
+  <section class="notfound turf-stripes">
+    <div class="container-x">
+      <span class="nf-logo">
+        <Image src={logo} alt={`${business.name} logo`} width={220} height={147} class="h-20 w-auto object-contain" />
+      </span>
+      <p class="eyebrow mt-8 text-turf-dark">Error 404</p>
+      <h1 class="nf-title">This patch of lawn doesn't exist.</h1>
+      <p class="nf-body">The page you're looking for moved or never existed. Let's get you back on track.</p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a href="/" class="btn-green">Back home</a>
+        <a href="/services" class="btn-outline">Browse services</a>
+        <a href={business.phoneHref} class="btn-outline"><Icon name="phone" size={17} /> {business.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    background: #f4f1e6;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding: 5rem 0;
+  }
+  .notfound .container-x { display: flex; flex-direction: column; align-items: center; }
+  .nf-logo { display: inline-flex; background: #fff; border-radius: 18px; padding: 12px 18px; box-shadow: 0 18px 40px -18px rgba(26,26,26,0.4); }
+  .nf-title { font-size: clamp(2rem, 4vw + 1rem, 3.5rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; color: #1a1a1a; margin-top: 0.75rem; max-width: 18ch; }
+  .nf-body { margin-top: 1rem; font-size: 1.15rem; color: #3a3a36; max-width: 38ch; }
+</style>

@@ -1,0 +1,43 @@
+---
+import Icon from './Icon.astro';
+import type { IconKey } from '@data/business';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  icon?: IconKey;
+  align?: 'left' | 'center';
+  light?: boolean;
+  as?: 'h1' | 'h2' | 'h3';
+  class?: string;
+  /** Heading font size token */
+  size?: 'display-lg' | 'display' | 'h2' | 'h3';
+}
+const {
+  eyebrow,
+  title,
+  icon,
+  align = 'left',
+  light = false,
+  as: Tag = 'h2',
+  class: cls = '',
+  size = 'h2',
+} = Astro.props;
+
+// Literal classes so Tailwind's scanner keeps them.
+const sizeClass: Record<NonNullable<Props['size']>, string> = {
+  'display-lg': 'text-display-lg',
+  display: 'text-display',
+  h2: 'text-h2',
+  h3: 'text-h3',
+};
+---
+<div class:list={[align === 'center' && 'mx-auto max-w-2xl text-center', cls]}>
+  {eyebrow && (
+    <p class:list={['eyebrow mb-4 inline-flex items-center gap-2', light ? 'text-gold-pale' : 'text-turf-dark', align === 'center' && 'justify-center']} data-reveal>
+      {icon && <Icon name={icon} size={16} />}
+      {eyebrow}
+    </p>
+  )}
+  <Tag data-split class:list={[sizeClass[size], light ? 'text-cream' : 'text-ink']}>{title}</Tag>
+</div>

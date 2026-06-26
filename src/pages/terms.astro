@@ -1,0 +1,49 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import { business } from '@data/business';
+---
+<BaseLayout
+  title="Terms of Use"
+  description="Terms of Use for Yurgin's Lawn Care."
+  noindex={true}
+>
+  <PageHero eyebrow="Legal" icon="shield" title="Terms of Use" />
+
+  <section class="bg-white">
+    <div class="container-x py-14 lg:py-20">
+      <div class="legal-prose">
+        <div class="legal-notice">
+          <strong>Placeholder — needs review.</strong> Carry over the existing Terms of Use from the current site and
+          have the owner or an attorney confirm the final wording before launch.
+        </div>
+
+        <p>These Terms of Use govern your use of the {business.name} website. By using this site, you agree to these
+          terms.</p>
+
+        <h2>Use of this site</h2>
+        <p>This website is provided for informational purposes — to learn about our services, service areas, and to
+          request a quote. Content may change without notice.</p>
+
+        <h2>Quotes & services</h2>
+        <p>Submitting a form is a request, not a contract. Pricing, scheduling, and service details are confirmed
+          directly with you before any work begins.</p>
+
+        <h2>Contact</h2>
+        <p>Questions about these terms? Email <a href={`mailto:${business.email}`}>{business.email}</a> or call
+          <a href={business.phoneHref}>{business.phoneDisplay}</a>.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-prose { max-width: 44rem; }
+  .legal-prose p { line-height: 1.7; color: #3a3a36; margin-bottom: 1.1rem; }
+  .legal-prose h2 { font-family: 'Bricolage Grotesque Variable', sans-serif; font-size: 1.4rem; font-weight: 800; color: #1a1a1a; margin: 2rem 0 0.6rem; }
+  .legal-prose a { color: #2e6b22; text-decoration: underline; text-underline-offset: 2px; }
+  .legal-notice {
+    background: rgba(232,144,31,0.12); border: 1px solid rgba(232,144,31,0.4);
+    border-radius: 0.8rem; padding: 1rem 1.25rem; margin-bottom: 2rem; color: #6e2e1f; line-height: 1.5;
+  }
+</style>

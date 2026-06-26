@@ -1,0 +1,80 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import CTASection from '@components/CTASection.astro';
+import Icon from '@components/Icon.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+---
+<BaseLayout title={entry.data.title} description={entry.data.description} type="article" fullTitle={true}>
+  <article>
+    <header class="post-header turf-stripes">
+      <div class="container-x">
+        <a href="/blog" class="post-back" data-reveal><Icon name="arrow" size={16} class="rotate-180" /> All posts</a>
+        <p class="post-meta" data-reveal><time datetime={entry.data.pubDate.toISOString()}>{fmt(entry.data.pubDate)}</time></p>
+        <h1 data-split data-split-hero class="post-h1">{entry.data.title}</h1>
+      </div>
+    </header>
+
+    <div class="bg-white">
+      <div class="container-x py-14 lg:py-20">
+        <div class="prose-article" data-reveal>
+          <Content />
+        </div>
+
+        <div class="post-cta" data-reveal>
+          <p class="eyebrow text-turf-dark">Ready for a lawn you're proud of?</p>
+          <p class="post-cta-body">Get a fast, free quote — or call us and talk to a real local crew.</p>
+          <div class="mt-5 flex flex-wrap gap-3">
+            <a href="/contact" class="btn-gold">Get a Free Quote</a>
+            <a href="/services" class="btn-outline">Browse services</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <CTASection />
+</BaseLayout>
+
+<style>
+  .post-header { background: #f4f1e6; padding-top: clamp(2.5rem, 5vw, 4rem); padding-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .post-back { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600; color: #2e6b22; margin-bottom: 1.5rem; }
+  .post-back:hover { color: #e8901f; }
+  .post-meta { font-family: 'Spline Sans Mono Variable', ui-monospace, monospace; font-size: 0.82rem; color: #6e2e1f; margin-bottom: 0.85rem; }
+  .post-h1 { font-size: clamp(2.1rem, 3.5vw + 1rem, 3.6rem); line-height: 1.05; letter-spacing: -0.02em; font-weight: 800; max-width: 20ch; color: #1a1a1a; }
+
+  .prose-article { max-width: 42rem; margin: 0 auto; }
+  .prose-article :global(h2) {
+    font-family: 'Bricolage Grotesque Variable', sans-serif;
+    font-size: 1.6rem; font-weight: 800; color: #1a1a1a;
+    margin: 2.25rem 0 0.85rem; letter-spacing: -0.01em;
+  }
+  .prose-article :global(p) { font-size: 1.125rem; line-height: 1.75; color: #2e2e2a; margin-bottom: 1.2rem; }
+  .prose-article :global(ul),
+  .prose-article :global(ol) { margin: 0 0 1.4rem 1.1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .prose-article :global(ul) { list-style: none; margin-left: 0; }
+  .prose-article :global(ul li) { position: relative; padding-left: 1.6rem; line-height: 1.6; color: #2e2e2a; }
+  .prose-article :global(ul li::before) {
+    content: ''; position: absolute; left: 0; top: 0.6em;
+    width: 8px; height: 8px; border-radius: 2px; background: #3e8e2e;
+  }
+  .prose-article :global(ol) { list-style: decimal; }
+  .prose-article :global(ol li) { line-height: 1.6; color: #2e2e2a; padding-left: 0.25rem; }
+  .prose-article :global(strong) { color: #1a1a1a; font-weight: 700; }
+  .prose-article :global(a) { color: #2e6b22; text-decoration: underline; text-underline-offset: 2px; }
+
+  .post-cta {
+    max-width: 42rem; margin: 3.5rem auto 0;
+    background: #f6f5ec; border: 1px solid rgba(26,26,26,0.07);
+    border-radius: 1.25rem; padding: 2rem;
+  }
+  .post-cta-body { margin-top: 0.5rem; font-size: 1.1rem; color: #3a3a36; }
+</style>

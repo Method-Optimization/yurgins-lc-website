@@ -1,0 +1,98 @@
+---
+import Icon from './Icon.astro';
+import { PLACEHOLDER } from '@data/business';
+
+const serviceOptions = [
+  'Lawn Mowing',
+  'Property Cleanup',
+  'Mulch',
+  'Hedge Trimming',
+  'Snow Removal',
+  'Holiday Lighting',
+  'Other',
+];
+---
+<div class="form-wrap">
+  <form
+    class="quote-form"
+    name="quote"
+    method="POST"
+    action={PLACEHOLDER.FORM_ENDPOINT}
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    data-validate
+  >
+    <input type="hidden" name="form-name" value="quote" />
+    <p hidden aria-hidden="true">
+      <label>Don't fill this out: <input name="bot-field" /></label>
+    </p>
+
+    <div class="form-grid">
+      <div class="field">
+        <label class="field-label" for="qf-first">First name <span class="req">*</span></label>
+        <input class="field-input" id="qf-first" name="first_name" type="text" required data-label="First name" autocomplete="given-name" />
+        <span class="field-error" data-error-for="first_name" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="field">
+        <label class="field-label" for="qf-last">Last name <span class="req">*</span></label>
+        <input class="field-input" id="qf-last" name="last_name" type="text" required data-label="Last name" autocomplete="family-name" />
+        <span class="field-error" data-error-for="last_name" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="field">
+        <label class="field-label" for="qf-email">Email <span class="req">*</span></label>
+        <input class="field-input" id="qf-email" name="email" type="email" required data-label="Email" autocomplete="email" inputmode="email" />
+        <span class="field-error" data-error-for="email" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="field">
+        <label class="field-label" for="qf-phone">Phone <span class="req">*</span></label>
+        <input class="field-input" id="qf-phone" name="phone" type="tel" required data-label="Phone" autocomplete="tel" inputmode="tel" />
+        <span class="field-error" data-error-for="phone" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="field form-span-2">
+        <label class="field-label" for="qf-address">Address</label>
+        <input class="field-input" id="qf-address" name="address" type="text" data-label="Address" autocomplete="street-address" />
+        <span class="field-error" data-error-for="address" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="field">
+        <label class="field-label" for="qf-zip">Zip code</label>
+        <input class="field-input" id="qf-zip" name="zip" type="text" data-label="Zip code" autocomplete="postal-code" inputmode="numeric" />
+        <span class="field-error" data-error-for="zip" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="field">
+        <label class="field-label" for="qf-service">Service interested in <span class="req">*</span></label>
+        <select class="field-select" id="qf-service" name="service" required data-label="Service">
+          <option value="">Choose a service…</option>
+          {serviceOptions.map((opt) => <option value={opt}>{opt}</option>)}
+        </select>
+        <span class="field-error" data-error-for="service" role="alert" aria-live="polite"></span>
+      </div>
+      <div class="field form-span-2">
+        <label class="field-label" for="qf-message">Message</label>
+        <textarea class="field-textarea" id="qf-message" name="message" data-label="Message" placeholder="Tell us about your property and what you need…"></textarea>
+        <span class="field-help">The more detail, the faster and more accurate your quote.</span>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-gold mt-6 w-full sm:w-auto">Send My Request</button>
+    <p class="mt-3 text-sm text-ink-soft">
+      Form delivery isn't wired yet — endpoint <span class="placeholder-token">{PLACEHOLDER.FORM_ENDPOINT}</span>.
+      Prefer to talk? Call us directly.
+    </p>
+  </form>
+
+  <div class="form-success" data-success>
+    <span class="form-success-icon"><Icon name="check" size={30} stroke={2.6} /></span>
+    <h3 class="font-display text-2xl font-extrabold text-ink">Request received — thanks!</h3>
+    <p class="max-w-md text-ink-soft">We'll get back to you fast with a no-pressure quote. Need it sooner? Give us a call and you'll reach a real local crew.</p>
+  </div>
+</div>
+
+<style>
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+  .form-span-2 { grid-column: 1 / -1; }
+  @media (max-width: 540px) { .form-grid { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  import '../scripts/forms.ts';
+</script>

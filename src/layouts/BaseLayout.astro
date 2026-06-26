@@ -1,0 +1,58 @@
+---
+import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/hanken-grotesk';
+import '@fontsource-variable/spline-sans-mono';
+import '../styles/global.css';
+
+import SEO from '@components/SEO.astro';
+import LocalBusinessSchema from '@components/LocalBusinessSchema.astro';
+import Header from '@components/Header.astro';
+import Footer from '@components/Footer.astro';
+import MobileStickyBar from '@components/MobileStickyBar.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+  /** Homepage / pages with a full-bleed hero behind the fixed header. */
+  hasHero?: boolean;
+  fullTitle?: boolean;
+}
+const { title, description, image, type, noindex = false, hasHero = false, fullTitle = false } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#2E6B22" />
+    <SEO title={title} description={description} image={image} type={type} noindex={noindex} fullTitle={fullTitle} />
+    <LocalBusinessSchema />
+    <script is:inline>
+      // Mark JS active before first paint so animation gating can apply.
+      document.documentElement.classList.add('js');
+      // Hard safety: if the motion bundle never runs, reveal everything.
+      window.setTimeout(function () {
+        document.documentElement.classList.add('motion-ready');
+      }, 3000);
+    </script>
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Header />
+    <main id="main" class:list={[!hasHero && 'pt-[var(--header-h)]']}>
+      <slot />
+    </main>
+    <Footer />
+    <MobileStickyBar />
+    <!-- Spacer so the mobile sticky bar never covers footer content -->
+    <div class="h-[70px] lg:hidden" aria-hidden="true"></div>
+
+    <script>
+      import '../scripts/motion.ts';
+    </script>
+  </body>
+</html>

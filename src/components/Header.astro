@@ -1,0 +1,248 @@
+---
+import { Image } from 'astro:assets';
+import { nav, services, business } from '@data/business';
+import Icon from './Icon.astro';
+import logo from '@images/logo.jpg';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path === href || path.startsWith(href + '/');
+---
+<header data-header class="header">
+  <div class="container-x flex h-[var(--header-h)] items-center justify-between gap-4">
+    <!-- Logo (also the landing target for the hero logo-flip) -->
+    <a href="/" class="header-logo-link shrink-0" aria-label={`${business.name} — home`}>
+      <span data-nav-logo-slot data-nav-logo class="header-logo">
+        <Image src={logo} alt={`${business.name} logo`} width={240} height={160} class="header-logo-img" loading="eager" />
+      </span>
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="hidden items-center gap-1 lg:flex" aria-label="Primary">
+      {nav.filter((n) => n.label !== 'Home').map((item) =>
+        item.hasMenu ? (
+          <div class="group relative">
+            <a
+              href={item.href}
+              class:list={['nav-link', isActive(item.href) && 'nav-link-active']}
+              aria-haspopup="true"
+            >
+              {item.label}
+              <Icon name="arrow" size={14} class="rotate-90 opacity-60 transition-transform group-hover:translate-y-0.5" />
+            </a>
+            <div class="dropdown" role="menu">
+              {services.map((s) => (
+                <a href={s.href} class="dropdown-item" role="menuitem">
+                  <span class="dropdown-icon"><Icon name={s.icon} size={18} /></span>
+                  {s.title}
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <a href={item.href} class:list={['nav-link', isActive(item.href) && 'nav-link-active']}>
+            {item.label}
+          </a>
+        )
+      )}
+    </nav>
+
+    <!-- Right-side CTAs (desktop) -->
+    <div class="hidden items-center gap-3 lg:flex">
+      <a href={business.phoneHref} class="call-link" aria-label={`Call ${business.phoneDisplay}`}>
+        <Icon name="phone" size={17} />
+        <span class="tnum font-mono text-[0.95rem] font-medium">{business.phoneDisplay}</span>
+      </a>
+      <a href="/contact" class="btn-gold">Get a Free Quote</a>
+    </div>
+
+    <!-- Mobile menu button -->
+    <button
+      type="button"
+      class="menu-btn lg:hidden"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      data-menu-open
+    >
+      <Icon name="menu" size={26} />
+    </button>
+  </div>
+</header>
+
+<!-- Mobile menu panel -->
+<div id="mobile-menu" class="mobile-menu" data-mobile-menu hidden>
+  <div class="mobile-menu-head container-x">
+    <span class="eyebrow text-cream/70">Menu</span>
+    <button type="button" class="menu-btn text-cream" aria-label="Close menu" data-menu-close>
+      <Icon name="close" size={26} />
+    </button>
+  </div>
+  <nav class="mobile-menu-nav container-x" aria-label="Mobile">
+    {nav.map((item) => (
+      <a href={item.href} class:list={['mobile-link', isActive(item.href) && 'mobile-link-active']}>
+        {item.label}
+      </a>
+    ))}
+    <div class="mobile-services">
+      <span class="eyebrow text-cream/60">Services</span>
+      {services.map((s) => (
+        <a href={s.href} class="mobile-sublink">{s.title}</a>
+      ))}
+    </div>
+  </nav>
+  <div class="mobile-menu-foot container-x">
+    <a href={business.phoneHref} class="btn-ghost-light w-full"><Icon name="phone" size={18} /> {business.phoneDisplay}</a>
+    <a href="/contact" class="btn-gold w-full">Get a Free Quote</a>
+  </div>
+</div>
+
+<style>
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    color: #1a1a1a;
+    /* Solid white to match the logo's background so the logo box blends away */
+    background-color: #fefefe;
+    box-shadow: 0 1px 0 rgba(26, 26, 26, 0.05), 0 8px 30px -26px rgba(26, 26, 26, 0.5);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .header-logo-link { display: inline-flex; align-items: center; position: relative; z-index: 10; }
+  .header-logo { display: block; height: 56px; }
+  .header-logo-img { height: 100%; width: auto; object-fit: contain; }
+
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 0.55rem 0.85rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #1a1a1a;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  .nav-link:hover { background-color: rgba(26, 26, 26, 0.06); }
+  .nav-link-active { color: #2e6b22; }
+
+  .call-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 9999px;
+    transition: color 0.2s;
+  }
+  .call-link:hover { color: #e8901f; }
+
+  /* Dropdown */
+  .dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 250px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 8px;
+    box-shadow: 0 20px 50px -16px rgba(26, 26, 26, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    color: #1a1a1a;
+  }
+  .group:hover .dropdown,
+  .group:focus-within .dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    transition: background-color 0.15s;
+  }
+  .dropdown-item:hover { background-color: #f4f1e6; }
+  .dropdown-icon { color: #3e8e2e; display: inline-flex; }
+
+  .menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+  }
+  @media (min-width: 1024px) {
+    .menu-btn,
+    .mobile-menu { display: none !important; }
+  }
+
+  /* Mobile menu */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: #1c3a18;
+    color: #f4f1e6;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem 0 calc(1.25rem + env(safe-area-inset-bottom));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .mobile-menu[hidden] { display: none; }
+  .mobile-menu.is-open { opacity: 1; }
+  .mobile-menu-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 1rem; }
+  .mobile-menu-nav { display: flex; flex-direction: column; gap: 0.15rem; flex: 1; overflow-y: auto; }
+  .mobile-link {
+    font-family: var(--tw-font-display, inherit);
+    font-size: 1.6rem;
+    font-weight: 800;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(244, 241, 230, 0.1);
+  }
+  .mobile-link-active { color: #e8901f; }
+  .mobile-services { padding-top: 1rem; display: flex; flex-direction: column; gap: 0.4rem; }
+  .mobile-sublink { font-weight: 600; opacity: 0.85; padding: 0.15rem 0; }
+  .mobile-menu-foot { display: flex; flex-direction: column; gap: 0.6rem; padding-top: 1.25rem; }
+</style>
+
+<script>
+  const openBtn = document.querySelector<HTMLButtonElement>('[data-menu-open]');
+  const closeBtn = document.querySelector<HTMLButtonElement>('[data-menu-close]');
+  const menu = document.querySelector<HTMLElement>('[data-mobile-menu]');
+
+  function openMenu() {
+    if (!menu) return;
+    menu.hidden = false;
+    requestAnimationFrame(() => menu.classList.add('is-open'));
+    openBtn?.setAttribute('aria-expanded', 'true');
+    document.documentElement.classList.add('lenis-stopped');
+    closeBtn?.focus();
+  }
+  function closeMenu() {
+    if (!menu) return;
+    menu.classList.remove('is-open');
+    openBtn?.setAttribute('aria-expanded', 'false');
+    document.documentElement.classList.remove('lenis-stopped');
+    setTimeout(() => { menu.hidden = true; }, 300);
+    openBtn?.focus();
+  }
+
+  openBtn?.addEventListener('click', openMenu);
+  closeBtn?.addEventListener('click', closeMenu);
+  menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu && !menu.hidden) closeMenu();
+  });
+</script>

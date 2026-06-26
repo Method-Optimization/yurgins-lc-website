@@ -1,0 +1,75 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import CareersForm from '@components/CareersForm.astro';
+import Icon from '@components/Icon.astro';
+
+const lookFor = [
+  { title: 'Dependability', body: 'You show up, on time, ready to work.' },
+  { title: 'Attention to detail', body: 'You care about crisp edges and a clean finish.' },
+  { title: 'Strong work ethic', body: 'You take pride in a job done right.' },
+  { title: 'Positive attitude', body: 'You make the team better to be around.' },
+];
+---
+<BaseLayout
+  title="Careers | Join the Yurgin's Lawn Care Team"
+  description="Now hiring hard-working lawn care crew in Salem & Gloucester counties. Reliable work, a great team, room to grow. Apply today with Yurgin's Lawn Care."
+>
+  <PageHero
+    eyebrow="We're hiring"
+    icon="badge"
+    title="Join our crew"
+    variant="green"
+  >
+    <p class="mt-6 max-w-3xl text-lg leading-relaxed text-cream/85" data-reveal data-delay="0.15">
+      We're always looking for hard-working, reliable people who take pride in a job done right. If you like working
+      outdoors, being part of a tight local team, and seeing the results of your work every day — we'd like to meet you.
+    </p>
+  </PageHero>
+
+  <section class="bg-white">
+    <div class="container-x grid gap-12 py-16 lg:grid-cols-[0.85fr_1.15fr] lg:py-24">
+      <div>
+        <h2 class="text-h3 text-ink" data-split>What we look for</h2>
+        <ul class="mt-7 flex flex-col gap-4" data-reveal-group data-stagger="80">
+          {lookFor.map((item) => (
+            <li class="look-item">
+              <span class="look-ic"><Icon name="check" size={16} stroke={2.4} /></span>
+              <span>
+                <strong>{item.title}</strong>
+                <span class="look-body"> — {item.body}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-6 text-ink-soft" data-reveal>Experience is a plus, but the right attitude matters most.</p>
+      </div>
+
+      <div class="apply-card" data-reveal data-delay="0.1">
+        <h2 class="text-h3 text-ink">Apply now</h2>
+        <p class="mt-2 text-ink-soft">Fill out the form and we'll be in touch.</p>
+        <div class="mt-6">
+          <CareersForm />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .look-item { display: flex; gap: 0.75rem; align-items: flex-start; line-height: 1.45; }
+  .look-item strong { color: #1a1a1a; font-weight: 700; }
+  .look-body { color: #3a3a36; }
+  .look-ic {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; border-radius: 9999px; flex-shrink: 0; margin-top: 1px;
+    background: #3e8e2e; color: #fff;
+  }
+  .apply-card {
+    background: #f6f5ec;
+    border: 1px solid rgba(26,26,26,0.07);
+    border-radius: 1.5rem;
+    padding: 2rem;
+  }
+  @media (min-width: 640px) { .apply-card { padding: 2.5rem; } }
+</style>

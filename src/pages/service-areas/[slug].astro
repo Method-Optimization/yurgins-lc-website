@@ -1,0 +1,104 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import CTASection from '@components/CTASection.astro';
+import ServiceCard from '@components/ServiceCard.astro';
+import Icon from '@components/Icon.astro';
+import { business, services, towns, trustPoints } from '@data/business';
+
+export async function getStaticPaths() {
+  return towns.map((town) => ({ params: { slug: town.slug }, props: { town } }));
+}
+
+const { town } = Astro.props;
+const nearby = towns.filter((t) => t.slug !== town.slug).slice(0, 8);
+const highlights = trustPoints.slice(0, 4);
+---
+<BaseLayout
+  title={`Lawn Care in ${town.name}, NJ | Mowing & Landscaping`}
+  description={`Reliable lawn care & landscaping in ${town.name}, NJ — mowing, cleanups, mulch & more from a local family-owned crew. Free quote: (856) 538-1755.`}
+  fullTitle={true}
+>
+  <PageHero
+    eyebrow={`${business.areaServedLabel}`}
+    icon="pin"
+    title={`Lawn Care in ${town.name}, NJ`}
+    variant="green"
+  >
+    <p class="mt-6 max-w-3xl text-lg leading-relaxed text-cream/90" data-reveal data-delay="0.15">
+      Looking for dependable lawn care in {town.name}? {business.name} is your local, family-owned crew —
+      bringing crisp mowing, sharp edging, seasonal cleanups, mulch, and winter services to {town.name} homes and
+      businesses. Same reliable team, every visit, with a complete clean-up before we go.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3" data-reveal data-delay="0.25">
+      <a href="/contact" class="btn-gold">Get a Free Quote in {town.name}</a>
+      <a href={business.phoneHref} class="btn-ghost-light"><Icon name="phone" size={18} /> {business.phoneDisplay}</a>
+    </div>
+  </PageHero>
+
+  <!-- Services -->
+  <section class="bg-white">
+    <div class="container-x py-16 lg:py-24">
+      <h2 class="text-h2 text-ink" data-split>Our {town.name} services</h2>
+      <p class="mt-4 max-w-prose text-lg text-ink-soft" data-reveal>
+        One local crew for a great-looking property all year — residential and commercial.
+      </p>
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-reveal-group data-stagger="80">
+        {services.map((s) => <ServiceCard service={s} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why local -->
+  <section class="why-band turf-stripes-dark">
+    <div class="container-x py-16 lg:py-20">
+      <h2 class="text-h2 text-cream" data-split>Your neighbors in {town.name} trust Yurgin's</h2>
+      <div class="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group data-stagger="90">
+        {highlights.map((t) => (
+          <div>
+            <span class="why-icon"><Icon name={t.icon} size={22} /></span>
+            <h3 class="mt-4 font-display text-lg font-extrabold text-white">{t.title}</h3>
+            <p class="mt-1 text-cream/90">{t.body}</p>
+          </div>
+        ))}
+      </div>
+      <p class="mt-12 text-cream/90" data-reveal>
+        Proudly serving {town.name} and the surrounding {business.areaServedLabel} communities.
+      </p>
+    </div>
+  </section>
+
+  <!-- Nearby towns -->
+  <section class="bg-cream">
+    <div class="container-x py-14">
+      <h2 class="eyebrow text-turf-dark" data-reveal>Nearby towns we serve</h2>
+      <ul class="mt-5 flex flex-wrap gap-2.5" data-reveal-group data-stagger="30">
+        {nearby.map((t) => (
+          <li><a href={`/service-areas/${t.slug}`} class="nearby-chip">{t.name}</a></li>
+        ))}
+        <li><a href="/service-areas" class="nearby-chip nearby-all">All service areas <Icon name="arrow" size={14} /></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <CTASection heading={`Ready for a sharper lawn in ${town.name}?`} />
+</BaseLayout>
+
+<style>
+  .why-band { background: #2e6b22; }
+  .why-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 50px; height: 50px; border-radius: 14px;
+    background: rgba(244, 241, 230, 0.1); color: #e8901f;
+    border: 1px solid rgba(244, 241, 230, 0.16);
+  }
+  .nearby-chip {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    padding: 0.5rem 1rem; border-radius: 9999px;
+    background: #fff; border: 1px solid rgba(46,107,34,0.18);
+    font-weight: 600; font-size: 0.92rem; color: #2e6b22;
+    transition: background-color 0.2s, color 0.2s, transform 0.2s;
+  }
+  .nearby-chip:hover { background: #3e8e2e; color: #fff; transform: translateY(-2px); }
+  .nearby-all { background: #2e6b22; color: #fff; }
+</style>

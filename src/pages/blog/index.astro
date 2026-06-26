@@ -1,0 +1,59 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import CTASection from '@components/CTASection.astro';
+import Icon from '@components/Icon.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
+);
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+---
+<BaseLayout
+  title="Lawn Care Tips & News | Yurgin's Lawn Care Blog"
+  description="Seasonal lawn care tips, how-tos, and local advice from the Yurgin's Lawn Care crew in Salem & Gloucester counties, NJ."
+>
+  <PageHero
+    eyebrow="From the crew"
+    icon="leaf"
+    title="Lawn care tips from the crew"
+    subtitle="Practical, South-Jersey-specific advice on keeping your lawn healthy and sharp through every season."
+  />
+
+  <section class="bg-white">
+    <div class="container-x py-16 lg:py-24">
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-reveal-group data-stagger="90">
+        {posts.map((post) => (
+          <article class="post-card">
+            <a href={`/blog/${post.id}`} class="post-card-link">
+              <time class="post-date tnum" datetime={post.data.pubDate.toISOString()}>{fmt(post.data.pubDate)}</time>
+              <h2 class="post-title">{post.data.title}</h2>
+              <p class="post-excerpt">{post.data.excerpt}</p>
+              <span class="post-read">Read more <Icon name="arrow" size={16} /></span>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>
+
+<style>
+  .post-card {
+    background: #fff;
+    border: 1px solid rgba(26,26,26,0.08);
+    border-radius: 1.25rem;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s cubic-bezier(0.16,1,0.3,1);
+  }
+  .post-card:hover { transform: translateY(-4px); box-shadow: 0 24px 50px -26px rgba(26,26,26,0.4); }
+  .post-card-link { display: flex; flex-direction: column; gap: 0.6rem; padding: 1.75rem; height: 100%; }
+  .post-date { font-family: 'Spline Sans Mono Variable', ui-monospace, monospace; font-size: 0.8rem; color: #2e6b22; font-weight: 500; }
+  .post-title { font-family: 'Bricolage Grotesque Variable', sans-serif; font-weight: 800; font-size: 1.3rem; line-height: 1.2; color: #1a1a1a; }
+  .post-excerpt { color: #3a3a36; line-height: 1.5; flex: 1; }
+  .post-read { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 700; color: #2e6b22; }
+  .post-card:hover .post-read svg { transform: translateX(4px); transition: transform 0.2s; }
+</style>

@@ -1,0 +1,58 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import CTASection from '@components/CTASection.astro';
+import ServiceAreaMap from '@components/ServiceAreaMap.astro';
+import Icon from '@components/Icon.astro';
+import { business, towns } from '@data/business';
+---
+<BaseLayout
+  title="Service Areas in Salem & Gloucester County, NJ"
+  description="Yurgin's Lawn Care serves Monroeville and a 20-mile radius across Salem & Gloucester counties. Find your town and get a free quote: (856) 538-1755."
+>
+  <PageHero
+    eyebrow="Where we work"
+    icon="pin"
+    title="Where we work"
+    subtitle={`Based in Monroeville, NJ, we serve a ${business.serviceRadiusMiles}-mile radius across ${business.areaServedLabel}. If you're nearby and don't see your town, just ask — chances are we cover you.`}
+  />
+
+  <section class="bg-white">
+    <div class="container-x py-16 lg:py-24">
+      <div class="grid items-start gap-12 lg:grid-cols-[1fr_1.1fr]">
+        <!-- Service-area map -->
+        <ServiceAreaMap height={420} zoom={10} data-reveal />
+
+        <!-- Town grid -->
+        <div>
+          <h2 class="text-h3 text-ink" data-split>Towns we serve</h2>
+          <p class="mt-3 text-ink-soft" data-reveal>Click your town for local lawn care details and a fast quote.</p>
+          <ul class="mt-7 grid grid-cols-2 gap-2.5 sm:grid-cols-3" data-reveal-group data-stagger="35">
+            {towns.map((t) => (
+              <li>
+                <a href={`/service-areas/${t.slug}`} class="town-link">
+                  <Icon name="pin" size={15} class="text-turf" />
+                  {t.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>
+
+<style>
+
+  .town-link {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.7rem 0.9rem; border-radius: 0.7rem;
+    background: #f6f5ec; border: 1px solid rgba(46,107,34,0.12);
+    font-weight: 600; color: #1a1a1a; font-size: 0.95rem;
+    transition: background-color 0.2s, transform 0.2s, border-color 0.2s;
+  }
+  .town-link:hover { background: #fff; border-color: #3e8e2e; transform: translateY(-2px); }
+</style>

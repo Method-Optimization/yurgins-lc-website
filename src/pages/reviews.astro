@@ -1,0 +1,48 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import ReviewCard from '@components/ReviewCard.astro';
+import Icon from '@components/Icon.astro';
+import { business } from '@data/business';
+import { testimonials } from '@data/testimonials';
+---
+<BaseLayout
+  title="Reviews | 5-Star Lawn Care in South Jersey"
+  description="Read why Salem & Gloucester County homeowners rate Yurgin's Lawn Care 5 stars. Ready to join them? Free quote: (856) 538-1755."
+>
+  <PageHero
+    eyebrow="5.0 on Yelp & Angi"
+    icon="star"
+    title="What our customers say"
+    subtitle="We're rated ★★★★★ 5.0 on Yelp and Angi — but the words mean more than the stars."
+  />
+
+  <section class="bg-white">
+    <div class="container-x py-16 lg:py-24">
+      <div class="reviews-grid" data-reveal-group data-stagger="80">
+        {testimonials.map((t) => <ReviewCard quote={t.quote} author={t.author} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band turf-stripes-dark">
+    <div class="container-x py-16 text-center lg:py-20">
+      <h2 data-split class="text-h2 text-cream">Want results like these?</h2>
+      <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row" data-reveal>
+        <a href="/contact" class="btn-gold">Get a Free Quote</a>
+        <a href={business.phoneHref} class="btn-ghost-light"><Icon name="phone" size={18} /> <span class="tnum font-mono">{business.phoneDisplay}</span></a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .cta-band { background: #2e6b22; color: #f4f1e6; }
+  .reviews-grid {
+    columns: 1;
+    column-gap: 1.25rem;
+  }
+  .reviews-grid > * { break-inside: avoid; margin-bottom: 1.25rem; }
+  @media (min-width: 640px) { .reviews-grid { columns: 2; } }
+  @media (min-width: 1024px) { .reviews-grid { columns: 3; } }
+</style>

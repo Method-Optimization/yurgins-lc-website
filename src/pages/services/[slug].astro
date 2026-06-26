@@ -1,0 +1,200 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHero from '@components/PageHero.astro';
+import CTASection from '@components/CTASection.astro';
+import ServiceCard from '@components/ServiceCard.astro';
+import Icon from '@components/Icon.astro';
+import { business, services as navServices } from '@data/business';
+import type { IconKey } from '@data/business';
+
+export async function getStaticPaths() {
+  const items = await getCollection('services');
+  return items.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const data = entry.data;
+const { Content } = await render(entry);
+const hasBody = entry.body && entry.body.trim().length > 0;
+
+const others = navServices.filter((s) => s.href !== `/services/${entry.id}`).slice(0, 3);
+---
+<BaseLayout title={data.seoTitle} description={data.seoDescription} fullTitle={true}>
+  <PageHero eyebrow="Service" icon={data.icon as IconKey} title={data.title} subtitle={data.intro} variant="green" />
+
+  <section class="bg-white">
+    <div class="container-x grid gap-12 py-16 lg:grid-cols-[1fr_22rem] lg:py-24">
+      <!-- Main content -->
+      <div>
+        <!-- Included -->
+        <h2 class="text-h3 text-ink" data-split>{data.includedHeading}</h2>
+        <ul class="mt-7 grid gap-3 sm:grid-cols-2" data-reveal-group data-stagger="70">
+          {data.included.map((item) => (
+            <li class="included-item">
+              <span class="included-check"><Icon name="check" size={16} stroke={2.4} /></span>
+              <span>
+                <strong>{item.title}</strong>
+                {item.body && <span class="included-body"> — {item.body}</span>}
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        <!-- Process -->
+        {data.process && (
+          <div class="mt-16">
+            <h2 class="text-h3 text-ink" data-split>{data.processHeading}</h2>
+            <ol class="mt-8 grid gap-6 sm:grid-cols-2" data-reveal-group data-stagger="90">
+              {data.process.map((step, i) => (
+                <li class="process-step">
+                  <span class="process-num tnum">{String(i + 1).padStart(2, '0')}</span>
+                  <h3 class="process-title">{step.title}</h3>
+                  <p class="process-body">{step.body}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
+
+        <!-- Plans -->
+        {data.plans && (
+          <div class="plans-panel mt-14" data-reveal>
+            {data.plansHeading && <h2 class="plans-heading">{data.plansHeading}</h2>}
+            <p class="plans-body">{data.plans}</p>
+          </div>
+        )}
+
+        <!-- Note callout -->
+        {data.note && (
+          <div class="note-callout mt-10" data-reveal>
+            <Icon name="sparkle" size={20} class="shrink-0 text-gold-dark" />
+            <p>{data.note}</p>
+          </div>
+        )}
+
+        <!-- Why -->
+        {data.why && (
+          <p class="mt-10 text-sm font-medium text-ink-soft" data-reveal>
+            <span class="font-mono uppercase tracking-wide text-turf-dark">Why Yurgin's:</span> {data.why}
+          </p>
+        )}
+
+        {hasBody && (
+          <div class="prose-block mt-10" data-reveal><Content /></div>
+        )}
+      </div>
+
+      <!-- Sticky CTA aside -->
+      <aside class="service-aside">
+        <div class="aside-card">
+          <p class="eyebrow text-turf-dark">Free, no-pressure</p>
+          <h2 class="aside-title">Get a quote for {data.title.replace('Residential ', '').replace(' Installation', '')}</h2>
+          <p class="aside-body">Tell us about your property — we'll get right back to you. Prefer to talk? Call a real local crew.</p>
+          <div class="mt-6 flex flex-col gap-3">
+            <a href={data.ctaHref} class="btn-gold w-full">{data.ctaLabel}</a>
+            <a href={business.phoneHref} class="btn-outline w-full">
+              <Icon name="phone" size={17} /> <span class="tnum font-mono">{business.phoneDisplay}</span>
+            </a>
+          </div>
+          <ul class="aside-trust">
+            <li><Icon name="shield" size={15} class="text-turf" /> Licensed & insured</li>
+            <li><Icon name="star" size={15} class="text-gold" /> 5.0 rated</li>
+            <li><Icon name="sparkle" size={15} class="text-turf" /> Clean-up every job</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Other services -->
+  <section class="bg-cream">
+    <div class="container-x py-16 lg:py-24">
+      <h2 class="text-h2 text-ink" data-split>More from Yurgin's</h2>
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-reveal-group data-stagger="90">
+        {others.map((s) => <ServiceCard service={s} />)}
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>
+
+<style>
+  .included-item {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 1rem 1.1rem;
+    background: #f6f5ec;
+    border-radius: 0.85rem;
+    line-height: 1.45;
+  }
+  .included-item strong { color: #1a1a1a; font-weight: 700; }
+  .included-body { color: #3a3a36; }
+  .included-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 9999px;
+    background: #3e8e2e;
+    color: #fff;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .process-step {
+    padding: 1.5rem;
+    background: #fff;
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    border-radius: 1rem;
+  }
+  .process-num {
+    font-family: 'Spline Sans Mono Variable', ui-monospace, monospace;
+    font-weight: 600;
+    color: #9A5408;
+    font-size: 0.95rem;
+  }
+  .process-title { font-family: 'Bricolage Grotesque Variable', sans-serif; font-weight: 800; font-size: 1.2rem; margin: 0.5rem 0; color: #1a1a1a; }
+  .process-body { color: #3a3a36; line-height: 1.5; }
+
+  .plans-panel {
+    background: linear-gradient(135deg, #2e6b22, #1c3a18);
+    color: #f4f1e6;
+    border-radius: 1.25rem;
+    padding: 2rem;
+  }
+  .plans-heading { font-family: 'Bricolage Grotesque Variable', sans-serif; font-weight: 800; font-size: 1.35rem; color: #fff; margin-bottom: 0.6rem; }
+  .plans-body { color: rgba(244, 241, 230, 0.88); line-height: 1.55; }
+
+  .note-callout {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    background: rgba(232, 144, 31, 0.12);
+    border: 1px solid rgba(232, 144, 31, 0.35);
+    border-radius: 0.9rem;
+    padding: 1.1rem 1.25rem;
+    color: #6e2e1f;
+    line-height: 1.5;
+  }
+
+  .service-aside { position: relative; }
+  .aside-card {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+    background: #fff;
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    border-radius: 1.25rem;
+    padding: 1.75rem;
+    box-shadow: 0 20px 50px -28px rgba(26, 26, 26, 0.4);
+  }
+  .aside-title { font-family: 'Bricolage Grotesque Variable', sans-serif; font-weight: 800; font-size: 1.4rem; line-height: 1.15; color: #1a1a1a; margin: 0.5rem 0 0.6rem; }
+  .aside-body { color: #3a3a36; line-height: 1.5; font-size: 0.95rem; }
+  .aside-trust { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.88rem; font-weight: 600; color: #3a3a36; }
+  .aside-trust li { display: inline-flex; align-items: center; gap: 0.5rem; }
+
+  .prose-block :global(p) { margin-bottom: 1rem; line-height: 1.6; color: #3a3a36; }
+</style>
